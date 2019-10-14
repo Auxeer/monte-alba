@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for precio in precios %}
+<option value="{{ precio.pk }}">{{ precio.precio }}</option>
+{% endfor %}

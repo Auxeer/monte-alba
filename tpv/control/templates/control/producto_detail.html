@@ -1,0 +1,39 @@
+{% extends "control/main.html" %}
+
+{% load static %}
+
+{% block title %}<title>Detalle Producto</title>{% endblock %}
+
+{% block content %}
+
+<div class="section__content section__content--p30">
+
+             
+
+        <div class="col-md-6 offset-md-3 mr-auto ml-auto">               
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                          <h6 class="m-0 font-weight-bold text-primary">Detalle del Producto</h6>
+                        </div>
+
+                        <div class="card-body card-block text-center">                              
+                            <p><strong>Nombre:</strong> {{ producto.producto }}</p>
+                            <p><strong>Descripcion:</strong> {{ producto.descripcion }}</p>
+                            <p><strong>Precio:</strong> Q{{ producto.precio }}</p>    
+                            <p><strong>Categoria:</strong> {{ producto.get_categoria_display }}</p>   
+                            <img src="{{ producto.imagen.url }}" width="426" height="217">
+    
+                        </div>
+    
+                        <div class="card-footer">
+                            <a href="{% url 'control:productos' %}"><button type="button" class="btn btn-secondary btn-sm">Regresar</button></a>
+                        </div>
+
+                      </div>         
+        </div>   
+        
+        
+        
+    </div>
+
+{% endblock content %}
