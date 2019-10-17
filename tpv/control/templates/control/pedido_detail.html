@@ -1,0 +1,47 @@
+{% extends "control/main.html" %}
+
+{% load static %}
+
+{% block title %}<title>Listado de Pedidos</title>{% endblock %}
+
+{% block content %}
+
+<div class="section__content section__content--p30">      
+
+        <div class="col-md-6 offset-md-3 mr-auto ml-auto">               
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                          <h6 class="m-0 font-weight-bold text-primary">Datos del Pedido</h6>
+                        </div>
+
+                        <div style="margin-left:20px;margin-top:20px">
+                            <h4>Productos</h4>
+                        
+                            {% for producto in pedido.detallepedido_set.all %}
+                            <hr>                        
+                            <td><p><strong>Producto:</strong> {{producto.producto}}</p></td> 
+                            <td><p><strong>Cantidad:</strong> {{producto.cantidad}}</p></td>                           
+                            {% endfor %}
+                            <hr>
+
+                        </div>  
+                        
+                        <div class="card-body card-block text-center">                              
+                            <p><strong>Id:</strong> {{ pedido.id }}</p>
+                            <p><strong>Total:</strong> Q{{ pedido.total }}</p>
+                            <p><strong>Estado:</strong> {{ pedido.estado }}</p>                                      
+                        </div>
+
+                            <div class="card-footer">
+                                    <a href="{% url 'control:pedidos' %}"><button type="button" class="btn btn-secondary btn-sm">Regresar</button></a>
+                                    
+                            </div>
+
+                      </div> 
+                        </form>
+                
+        </div>     
+        
+</div>
+
+{% endblock content %}

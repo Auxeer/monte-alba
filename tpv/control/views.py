@@ -29,10 +29,17 @@ class PedidoListView(generic.ListView):
 class PedidoDetailView(generic.DetailView):
     model = Pedido
 
-def load_precios(request):
-    producto_id = request.GET.get('producto')
-    precios = Producto.objects.get(producto_id=producto_id)
-    return render(request, 'control/precios_list_options.html', {'precios': precios})
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+
+def fetch_price(request, pk):
+    product = get_object_or_404(Producto, pk=pk)
+    # print('producto', product)
+    if request.method=='GET':
+        price = product.precio
+        # print('precio',price)
+
+        return HttpResponse(str(price), content_type="text/plain")
 
 # ------------------------------------
 
@@ -76,6 +83,8 @@ class ProductoDelete(DeleteView):
 
 # ------------------------------------
 
+from django.db import transaction
+
 class PedidoCreate(CreateView):
     model = Pedido
     # fields = '__all__'
@@ -84,16 +93,19 @@ class PedidoCreate(CreateView):
     template_name_suffix = '_crear'
 
     def get_context_data(self, **kwargs):
-        context = super(PedidoCreate, self).get_context_data(**kwargs)
+        data = super(PedidoCreate, self).get_context_data(**kwargs)
         if self.request.POST:
-            context['detalle'] = DetallePedidoFormSet(self.request.POST)
+            data['detalle'] = DetallePedidoFormSet(self.request.POST)
         else:
-            context['detalle'] = DetallePedidoFormSet()
-        return context
+            data['detalle'] = DetallePedidoFormSet()
+        return data
 
     def form_valid(self, form):
         context = self.get_context_data()
         detalle = context['detalle']
+        with transaction.atomic():
+            self.object = form.save()
+
         if detalle.is_valid():
             response = super().form_valid(form)
             detalle.instance = self.object
@@ -111,6 +123,29 @@ class PedidoUpdate(UpdateView):
     # fields = '__all__'
     form_class = PedidoForm
     template_name_suffix = '_crear'
+
+    def get_context_data(self, **kwargs):
+        context = super(PedidoUpdate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['detalle'] = DetallePedidoFormSet(self.request.POST, instance=self.object)
+            context['detalle'].full_clean()
+        else:
+            context['detalle'] = DetallePedidoFormSet(instance=self.object)
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data(form=form)
+        detalle = context['detalle']
+        with transaction.atomic():
+            self.object = form.save()
+            
+        if detalle.is_valid():
+            response = super().form_valid(form)
+            detalle.instance = self.object
+            detalle.save()
+            return response
+        else:
+            return super(PedidoUpdate, self).form_valid(form)
 
     @method_decorator(permission_required('control.change_pedido',reverse_lazy('control:pedidos')))
     def dispatch(self, *args, **kwargs):

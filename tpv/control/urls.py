@@ -24,5 +24,5 @@ urlpatterns += [
     path('pedido/create/', views.PedidoCreate.as_view(), name='pedido_create'),
     path('pedido/<int:pk>/update/', views.PedidoUpdate.as_view(), name='pedido_update'),
     path('pedido/<int:pk>/delete/', views.PedidoDelete.as_view(), name='pedido_delete'),
-    path('ajax/load-precios/', views.load_precios, name='ajax_load_precios'),
+    path('price/<int:pk>', views.fetch_price, name='fetch_price'),
 ]

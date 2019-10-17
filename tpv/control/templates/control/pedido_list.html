@@ -24,9 +24,9 @@
           <table class="table table-bordered" id="Tabla" width="100%" cellspacing="0">
             <thead>
               <tr>
-
-                <th>Total</th>
-                <th>Fecha</th>
+                <th width="15%">Detalle Pedido</th>
+                <th>Id</th>
+                <th>Total</th>               
                 <th>Estado</th>
                 {% if user.is_authenticated %}
                 <th style="text-align: center;">Accion</th>
@@ -41,15 +41,20 @@
 
                 {% for pedido in pedido_list %}                     
                     <tr>
-                        <td>{{ pedido.total }}</td>
-                        <td>{{ pedido.fecha }}</td>
+                        
+                        {% if user.is_authenticated %}
+                        <td style="text-align: center;">
+                        {% if perms.control.view_actividad %}<a href="{{ pedido.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>{% endif %}  
+                        <td>{{ pedido.id }}</td>
+                        <td>Q{{ pedido.total }}</td> 
+                        </td> 
+                        {% endif %} 
                         <td>{{ pedido.estado }}</td>
 
                         {% if user.is_authenticated %}
                         <td style="text-align: center;">
-                            {% if perms.control.view_actividad %}<a href="{{ pedido.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>{% endif %}  
-                            {% if perms.control.change_actividad %}<a href="{% url 'control:pedido_update' producto.id %}"><img src="{% static 'img/icon/update.png' %}" width="25" height="25"/></a>{% endif %}  
-                            {% if perms.control.delete_actividad %}<a href="{% url 'control:pedido_delete' producto.id %}"><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>{% endif %}  
+                            {% if perms.control.change_actividad %}<a href="{% url 'control:pedido_update' pedido.id %}"><img src="{% static 'img/icon/update.png' %}" width="25" height="25"/></a>{% endif %}  
+                            {% if perms.control.delete_actividad %}<a href="{% url 'control:pedido_delete' pedido.id %}"><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>{% endif %}  
                         </td> 
                         {% endif %}                                 
 

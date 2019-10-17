@@ -85,11 +85,13 @@
                         del.val('on');
                         row.hide();
                         forms = $('.' + options.formCssClass).not(':hidden');
+                        CalcularTotal();
                     } else {
                         row.remove();
                         // Update the TOTAL_FORMS count:
                         forms = $('.' + options.formCssClass).not('.formset-custom-template');
                         totalForms.val(forms.length);
+                        CalcularTotal();
                     }
                     for (var i=0, formCount=forms.length; i<formCount; i++) {
                         // Apply `extraClasses` to form rows so they're nicely alternating:
@@ -191,7 +193,7 @@
             addButton.click(function() {
                 var formCount = parseInt(totalForms.val()),
                     row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
-                    buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this),
+                    buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this)
                     delCssSelector = $.trim(options.deleteCssClass).replace(/\s+/g, '.');
                 applyExtraClasses(row, formCount);
                 row.insertBefore(buttonRow).show();
@@ -229,3 +231,33 @@
         removed: null                    // Function called each time a form is deleted
     };
 })(jQuery);
+
+//Script para calcular el Total del Pedido
+function CalcularTotal () {
+    var subtotal = 0;
+    var total = 0;
+    var trLength = $("#tPedidos TBODY TR").length;
+    $("#tPedidos TBODY TR").each(function (index) {
+
+        if (index === (trLength - 1)){
+            return
+        }
+
+        var row = $(this);
+
+            //Valor de Precio
+            Precio = row.find("TD").eq(1).find('input').val();
+
+            //Valor de Cantidad
+            CantidadPedido = row.find("TD").eq(2).find('input').val();
+
+            //subtotal de PRECIO * CAntidad y Total de cada fila
+            subtotal = Precio * CantidadPedido;
+            total += Number(subtotal);
+            //console.log(total);                
+        });
+
+        //Asignarle el valor al input
+        $("#total").val(total);
+        //console.log(total);          
+    }

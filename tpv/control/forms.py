@@ -1,6 +1,5 @@
 from django import forms
-from django.forms import ModelForm
-from django.forms.models import inlineformset_factory
+from django.forms import ModelForm, inlineformset_factory
 
 from .models import *
 
@@ -41,7 +40,7 @@ class PedidoForm(ModelForm):
     def __init__(self, *args, **kwargs):
             super(PedidoForm, self).__init__(*args, **kwargs)
             for visible in self.visible_fields():
-                visible.field.widget.attrs['class'] = 'form-control'
+                visible.field.widget.attrs['class'] = 'form-control'                     
 
     class Meta:
         model = Pedido
@@ -55,7 +54,7 @@ class DetallePedidoForm(ModelForm):
             super(DetallePedidoForm, self).__init__(*args, **kwargs)
             self.fields['producto'].widget.attrs\
             .update({
-                'class': 'form-control'
+                'class': 'form-control mydropdownclass'
             })
             self.fields['cantidad'].widget.attrs\
             .update({
@@ -63,13 +62,18 @@ class DetallePedidoForm(ModelForm):
             })
             self.fields['precio'].widget.attrs\
             .update({
-                'class': 'form-control'
-            })        
+                'class': 'form-control mypricefield'
+            })   
+            self.fields['cantidad'].widget.attrs['min'] = 1 
+            self.fields['cantidad'].widget.attrs['required'] = True  
+            self.fields['precio'].widget.attrs['min'] = 1  
+            self.fields['precio'].widget.attrs['readonly'] = True
+               
 
     class Meta:
         model = DetallePedido
         exclude = ()
 
-DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=3, can_delete=True)
+DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
 
 # ------------------------------------

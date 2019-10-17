@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse #Used to generate URLs by reversing the URL patterns
 from datetime import datetime, date
 
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 # Create your models here.
 class Producto(models.Model):
     producto = models.CharField(max_length=100)
@@ -44,7 +46,7 @@ class DetallePedido(models.Model):
     producto = models.ForeignKey(Producto, db_column='producto_id', on_delete=models.SET_NULL, null=True, verbose_name='Productos')
 
     cantidad = models.DecimalField(max_digits=10, decimal_places=0, default=1)
-    precio = models.DecimalField(max_digits=10, decimal_places=0, default=1)
+    precio = models.CharField(max_length=200)
     
 
   

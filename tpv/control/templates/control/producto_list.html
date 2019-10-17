@@ -22,7 +22,7 @@
           <table class="table table-bordered" id="Tabla" width="100%" cellspacing="0">
             <thead>
               <tr>
-
+                <th>Id</th>
                 <th>Producto</th>
                 <th>Descripcion</th>
                 <th>Precio</th>
@@ -40,6 +40,7 @@
 
                 {% for producto in producto_list %}                     
                     <tr>
+                        <td>{{ producto.id }}</td>
                         <td>{{ producto.producto }}</td>
                         <td>{{ producto.descripcion }}</td>
                         <td>Q{{ producto.precio }}</td>
