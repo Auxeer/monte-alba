@@ -11,6 +11,9 @@ from django.views import generic
 from .models import *
 from .forms import *
 
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+
 # ------------------------------------
 
 class ProductoListView(generic.ListView):
@@ -26,20 +29,52 @@ class PedidoListView(generic.ListView):
     model = Pedido
     # paginate_by = 10
 
+    def get_queryset(self):
+
+        qs1 = Pedido.objects.all() #your first qs
+        t2 = Pedido.objects.filter(estado='Pendiente')
+        
+        return qs1
+
 class PedidoDetailView(generic.DetailView):
     model = Pedido
 
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
-
 def fetch_price(request, pk):
     product = get_object_or_404(Producto, pk=pk)
-    # print('producto', product)
+
     if request.method=='GET':
         price = product.precio
-        # print('precio',price)
 
         return HttpResponse(str(price), content_type="text/plain")
+
+# ------------------------------------
+
+class VentaListView(generic.ListView):
+    model = Venta
+    # paginate_by = 10
+
+class VentaDetailView(generic.DetailView):
+    model = Venta
+
+def fetch_total(request, pk):
+    pedido = get_object_or_404(Pedido, pk=pk)
+
+    if request.method=='GET':
+        total = pedido.total
+
+        return HttpResponse(str(total), content_type="text/plain")
+
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt   
+def estado_pedido(request, pk):
+
+    if request.method == 'POST':
+        obj = Pedido.objects.get(pk=pk)
+        obj.estado = "Finalizado"
+        obj.save()
+
+        return render(request, 'control/venta_list.html')
 
 # ------------------------------------
 
@@ -159,5 +194,20 @@ class PedidoDelete(DeleteView):
     @method_decorator(permission_required('control.delete_pedido',reverse_lazy('control:pedidos')))
     def dispatch(self, *args, **kwargs):
             return super(PedidoDelete, self).dispatch(*args, **kwargs)
+
+# ------------------------------------
+
+class VentaCreate(CreateView):
+    model = Venta
+    # fields = '__all__'
+    form_class = VentaForm
+    success_url = reverse_lazy('control:ventas')
+    template_name_suffix = '_crear'
+
+    @method_decorator(permission_required('control.add_venta',reverse_lazy('control:ventas')))
+    def dispatch(self, *args, **kwargs):
+            return super(VentaCreate, self).dispatch(*args, **kwargs)
+
+
 
 # ------------------------------------

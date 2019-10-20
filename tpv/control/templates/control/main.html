@@ -61,11 +61,11 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProductos" aria-expanded="true" aria-controls="collapseProductos">
           <i class="fas fa-fw fa-cog"></i>
           <span>Productos</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseProductos" class="collapse" aria-labelledby="headingProducto" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Manejo de Productos:</h6>
             <a class="collapse-item" href="{% url 'control:productos' %}">Listar Productos</a>
@@ -76,15 +76,30 @@
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePedidos" aria-expanded="true" aria-controls="collapsePedidos">
           <i class="fas fa-fw fa-wrench"></i>
           <span>Pedidos</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+        <div id="collapsePedidos" class="collapse" aria-labelledby="headingPedidos" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Manejo de Pedidos:</h6>
             <a class="collapse-item" href="{% url 'control:pedidos' %}">Listar Pedidos</a>
             <a class="collapse-item" href="{% url 'control:pedido_create' %}">Nuevo Pedido</a>           
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Utilities Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVentas" aria-expanded="true" aria-controls="collapseVentas">
+          <i class="fas fa-fw fa-wrench"></i>
+          <span>Ventas</span>
+        </a>
+        <div id="collapseVentas" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Manejo de Ventas:</h6>
+            <a class="collapse-item" href="{% url 'control:ventas' %}">Listar Ventas</a>
+            <a class="collapse-item" href="{% url 'control:venta_create' %}">Nueva Venta</a>           
           </div>
         </div>
       </li>

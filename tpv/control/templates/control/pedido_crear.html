@@ -115,7 +115,7 @@
     <!-- -------------------------------------------------------------- -->
 
     <script>
-    
+
     $(document).on("change", ".mydropdownclass" , function() {
         producto_id = $(this).val();
         var url = '/control/price/'+producto_id;
@@ -138,7 +138,7 @@
             CalcularTotal ();      
         },
         error: function(data) {
-            alert('error' + data);
+            alert('Ha ocurrido un error, intentalo de nuevo');
             //console.log(data);
             CalcularTotal ();
         } 

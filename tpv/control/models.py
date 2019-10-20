@@ -39,15 +39,31 @@ class Pedido(models.Model):
         return reverse('control:pedido-detail', args=[str(self.id)])
 
     def __str__(self):
-        return "[" + str(self.id) + "][" + str(self.fecha) + "] "
+        return str(self.id)
 
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, db_column='pedido_id', on_delete=models.SET_NULL, null=True)
     producto = models.ForeignKey(Producto, db_column='producto_id', on_delete=models.SET_NULL, null=True, verbose_name='Productos')
 
     cantidad = models.DecimalField(max_digits=10, decimal_places=0, default=1)
-    precio = models.CharField(max_length=200)
-    
+    precio = models.CharField(max_length=200, default=0)
+
+
+class Venta(models.Model):
+    fecha = models.DateField(default=datetime.now, null=True, blank=True)
+    pedido = models.ForeignKey(Pedido, db_column='pedido_id', on_delete=models.SET_NULL, null=True)
+    total = models.CharField(max_length=200, default=1)
+    cliente = models.CharField(max_length=100)
+    nit = models.CharField(max_length=10)
+
+    def get_absolute_url(self):
+        """
+        Devuelve el URL a una instancia particular de Persona(update etc)
+        """
+        return reverse('control:venta-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return str(self.id)
 
   
     

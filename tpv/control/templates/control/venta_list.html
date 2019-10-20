@@ -1,0 +1,72 @@
+{% extends "control/main.html" %}
+
+{% load static %}
+
+{% block title %}<title>Listado Ventas</title>{% endblock %}
+
+{% block content %}
+
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Ventas</h1>
+    
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h4 class="m-0 font-weight-bold text-primary">Listado de Ventas</h4>
+        <a href="{% url 'control:venta_create' %}"><button type="button" class="btn btn-success float-right">Agregar</button></a>
+      </div>
+      <div class="card-body">
+          
+        <div class="table-responsive">
+          <table class="table table-bordered" id="Tabla" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Fecha de Venta</th>
+                <th>Numero Pedido</th>
+                <th>Total</th>
+                <th>Cliente</th>
+                <th>Nit Cliente</th>
+                {% if user.is_authenticated %}
+                <th style="text-align: center;">Accion</th>
+                {% endif %} 
+
+              </tr>
+            </thead>
+            
+            <tbody>
+
+                {% if venta_list %}
+
+                {% for venta in venta_list %}                     
+                    <tr>
+                        <td>{{ venta.id }}</td>
+                        <td>{{ venta.fecha }}</td>
+                        <td>{{ venta.pedido }}</td>
+                        <td>Q{{ venta.total }}</td>
+                        <td>{{ venta.cliente  }}</td>
+                        <td>{{ venta.nit  }}</td>
+
+                        {% if user.is_authenticated %}
+                        <td style="text-align: center;">
+                            {% if perms.control.view_actividad %}<a href="{{ venta.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>{% endif %}  
+                            {% if perms.control.change_actividad %}<a href=""><img src="{% static 'img/icon/update.png' %}" width="25" height="25"/></a>{% endif %}  
+                            {% if perms.control.delete_actividad %}<a href=""><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>{% endif %}  
+                        </td> 
+                        {% endif %}                                 
+
+                    </tr>
+                {% endfor %}                      
+                
+                {% endif %}   
+                
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+{% endblock content %}

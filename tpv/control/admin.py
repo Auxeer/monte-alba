@@ -6,13 +6,14 @@ from .models import *
 
 # Register your models here.
 admin.site.register(Producto)
+admin.site.register(Venta)
 
 class DetallePedidoInline(admin.TabularInline):
     model = DetallePedido
 
 class PedidoAdmin(admin.ModelAdmin):
     inlines = (DetallePedidoInline,)
-    readonly_fields=('estado',)
+
 
 admin.site.register(Pedido, PedidoAdmin)
 
