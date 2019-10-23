@@ -24,12 +24,10 @@
                                     <div class="row form-group">
     
                                             <div class="col col-md-12">
-                                                    <label for="" id="" class="form-control-label">Fecha:</label>
+                                                    
                                                     {{ form.fecha }}
                                             </div>
-                                            <div class="col-12 col-md-9">                                              
-                                                <br>                                  
-                                            </div>
+                                           
     
                                             <div class="col col-md-12">
                                                     <label for="" id="" class="form-control-label">Pedido:</label>
@@ -46,6 +44,14 @@
                                             <div class="col-12 col-md-9">                                              
                                                 <br>                                  
                                             </div>
+
+                                            <div class="col col-md-12">
+                                                    <label for="" id="" class="form-control-label">Nit</label>
+                                                    {{ form.nit }}
+                                                </div>
+                                                <div class="col-12 col-md-9">                                              
+                                                    <br>                                  
+                                                </div>   
     
                                             <div class="col col-md-12">
                                                     <label for="" id="" class="form-control-label">Cliente</label>
@@ -54,14 +60,7 @@
                                             <div class="col-12 col-md-9">                                              
                                                 <br>                                  
                                             </div>
-    
-                                            <div class="col col-md-12">
-                                                <label for="" id="" class="form-control-label">Nit</label>
-                                                {{ form.nit }}
-                                        </div>
-                                        <div class="col-12 col-md-9">                                              
-                                            <br>                                  
-                                        </div>                                     
+                                                                              
                                     </div>                                                                             
                                 </div>
     
@@ -111,40 +110,6 @@
 
         });        
     });
-
-    //Funcion para cambiar el Estado del Pedido
-    $('#venta_form').submit( function(event) {
-        event.preventDefault(); //Detiene el submit del form para que se ejecute esta funcion
-        var _this = $(this); //Obtengo el id del submit form
-
-        pedido_id = $("#id_pedido").val();
-
-        var url = '/control/estado/'+pedido_id;
-        console.log(pedido_id);
-
-        $.ajax({              
-        type: "POST",    
-        url: url,                   
-        data: {
-            'pedido': pedido_id 
-        },
-        success: function () {   
-            console.log('Funciono!');
-            //$("#id_pedido").val(pedido_id);
-            _this.unbind('submit').submit();    //Continua el submit del form si la funcion se realiza 
-            //$("#id_pedido").val(pedido_id);
-        },
-        error: function() {
-            alert('Ha ocurrido un error, intentalo de nuevo');
-            console.log("error");
-        } 
-
-        }); 
-
-        
-    });
-
-    
 
     </script>
 

@@ -18,7 +18,6 @@ from django.http import HttpResponse
 
 class ProductoListView(generic.ListView):
     model = Producto
-    # paginate_by = 10
 
 class ProductoDetailView(generic.DetailView):
     model = Producto
@@ -27,7 +26,6 @@ class ProductoDetailView(generic.DetailView):
 
 class PedidoListView(generic.ListView):
     model = Pedido
-    # paginate_by = 10
 
     def get_queryset(self):
 
@@ -51,7 +49,6 @@ def fetch_price(request, pk):
 
 class VentaListView(generic.ListView):
     model = Venta
-    # paginate_by = 10
 
 class VentaDetailView(generic.DetailView):
     model = Venta
@@ -64,17 +61,19 @@ def fetch_total(request, pk):
 
         return HttpResponse(str(total), content_type="text/plain")
 
+# ------------------------------------
+
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import redirect
 
 @csrf_exempt   
 def estado_pedido(request, pk):
+    obj = Pedido.objects.get(pk=pk)
+    obj.estado = "Cocinado"
+    obj.save()
 
-    if request.method == 'POST':
-        obj = Pedido.objects.get(pk=pk)
-        obj.estado = "Finalizado"
-        obj.save()
-
-        return render(request, 'control/venta_list.html')
+    return redirect('/control/pedidos')
+    # return render(request, 'control/venta_list.html')
 
 # ------------------------------------
 
@@ -201,13 +200,23 @@ class VentaCreate(CreateView):
     model = Venta
     # fields = '__all__'
     form_class = VentaForm
-    success_url = reverse_lazy('control:ventas')
+    # success_url = reverse_lazy('control:ventas')
     template_name_suffix = '_crear'
 
     @method_decorator(permission_required('control.add_venta',reverse_lazy('control:ventas')))
     def dispatch(self, *args, **kwargs):
             return super(VentaCreate, self).dispatch(*args, **kwargs)
+    
+    def get_success_url(self):
+        return reverse('control:venta-detail',  kwargs={'pk':self.object.pk})
 
+class VentaDelete(DeleteView):
+    model = Venta
+    success_url = reverse_lazy('control:ventas')
+    template_name_suffix = '_eliminar'
 
+    @method_decorator(permission_required('control.delete_venta',reverse_lazy('control:ventas')))
+    def dispatch(self, *args, **kwargs):
+            return super(VentaDelete, self).dispatch(*args, **kwargs)
 
 # ------------------------------------

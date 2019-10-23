@@ -22,12 +22,15 @@
           <table class="table table-bordered" id="Tabla" width="100%" cellspacing="0">
             <thead>
               <tr>
-                <th>Id</th>
+                {% if perms.control.view_actividad %}
+                <th>Factura</th>
+                {% endif %}
+                <th>No. Venta</th>
+                <!--<th>No. Pedido</th>-->
                 <th>Fecha de Venta</th>
-                <th>Numero Pedido</th>
                 <th>Total</th>
-                <th>Cliente</th>
                 <th>Nit Cliente</th>
+                <th>Cliente</th>                
                 {% if user.is_authenticated %}
                 <th style="text-align: center;">Accion</th>
                 {% endif %} 
@@ -41,18 +44,20 @@
 
                 {% for venta in venta_list %}                     
                     <tr>
-                        <td>{{ venta.id }}</td>
-                        <td>{{ venta.fecha }}</td>
-                        <td>{{ venta.pedido }}</td>
-                        <td>Q{{ venta.total }}</td>
-                        <td>{{ venta.cliente  }}</td>
-                        <td>{{ venta.nit  }}</td>
-
-                        {% if user.is_authenticated %}
+                        {% if perms.control.view_actividad %}
                         <td style="text-align: center;">
-                            {% if perms.control.view_actividad %}<a href="{{ venta.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>{% endif %}  
-                            {% if perms.control.change_actividad %}<a href=""><img src="{% static 'img/icon/update.png' %}" width="25" height="25"/></a>{% endif %}  
-                            {% if perms.control.delete_actividad %}<a href=""><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>{% endif %}  
+                            <a href="{{ venta.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>
+                        </td> 
+                        {% endif %}
+                        <td>{{ venta.id }}</td>                       
+                        <!--<td>{{ venta.pedido.pk }}</td>-->
+                        <td>{{ venta.fecha }}</td>
+                        <td>Q{{ venta.total }}</td>
+                        <td>{{ venta.nit  }}</td>
+                        <td>{{ venta.cliente  }}</td>
+                        {% if user.is_authenticated %}
+                        <td style="text-align: center;">  
+                            {% if perms.control.delete_actividad %}<a href="{% url 'control:venta_delete' venta.id %}"><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>{% endif %}  
                         </td> 
                         {% endif %}                                 
 

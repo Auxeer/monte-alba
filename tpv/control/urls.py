@@ -35,6 +35,7 @@ urlpatterns += [
     path('price/<int:pk>', views.fetch_price, name='fetch_price'),
 
     path('venta/create/', views.VentaCreate.as_view(), name='venta_create'),
+    path('venta/<int:pk>/delete/', views.VentaDelete.as_view(), name='venta_delete'),
     path('total/<int:pk>', views.fetch_total, name='fetch_total'),
     path('estado/<int:pk>', views.estado_pedido, name='estado_pedido'),
     

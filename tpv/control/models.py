@@ -19,9 +19,6 @@ class Producto(models.Model):
     imagen = models.ImageField(upload_to='photos')
 
     def get_absolute_url(self):
-        """
-        Devuelve el URL a una instancia particular de Persona(update etc)
-        """
         return reverse('control:producto-detail', args=[str(self.id)])
 
     def __str__(self):
@@ -31,15 +28,14 @@ class Pedido(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     fecha = models.DateField(default=datetime.now, null=True, blank=True)
     estado = models.CharField(max_length=20, default='Pendiente')
+    cliente = models.CharField(max_length=50, default='Agregue Cliente')
+    observacion = models.CharField(max_length=200, null=False, default='Ninguna')
 
     def get_absolute_url(self):
-        """
-        Devuelve el URL a una instancia particular de Persona(update etc)
-        """
         return reverse('control:pedido-detail', args=[str(self.id)])
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id) + " | " + str(self.cliente)
 
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, db_column='pedido_id', on_delete=models.SET_NULL, null=True)
@@ -48,26 +44,15 @@ class DetallePedido(models.Model):
     cantidad = models.DecimalField(max_digits=10, decimal_places=0, default=1)
     precio = models.CharField(max_length=200, default=0)
 
-
 class Venta(models.Model):
     fecha = models.DateField(default=datetime.now, null=True, blank=True)
     pedido = models.ForeignKey(Pedido, db_column='pedido_id', on_delete=models.SET_NULL, null=True)
-    total = models.CharField(max_length=200, default=1)
-    cliente = models.CharField(max_length=100)
-    nit = models.CharField(max_length=10)
+    total = models.CharField(max_length=200, default=0)
+    cliente = models.CharField(max_length=100, default='Consumidor Final')
+    nit = models.CharField(max_length=10, default='C.F')
 
     def get_absolute_url(self):
-        """
-        Devuelve el URL a una instancia particular de Persona(update etc)
-        """
         return reverse('control:venta-detail', args=[str(self.id)])
 
     def __str__(self):
-        return str(self.id)
-
-  
-    
-
-    
-    
-
+        return str(self.id) + " | " + str(self.cliente)

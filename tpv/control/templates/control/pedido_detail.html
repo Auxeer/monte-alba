@@ -27,14 +27,21 @@
                         </div>  
                         
                         <div class="card-body card-block text-center">                              
-                            <p><strong>Id:</strong> {{ pedido.id }}</p>
+                            <p><strong>No. de Pedido:</strong> {{ pedido.id }}</p>
                             <p><strong>Total:</strong> Q{{ pedido.total }}</p>
-                            <p><strong>Estado:</strong> {{ pedido.estado }}</p>                                      
+                            <p><strong>Estado:</strong> {{ pedido.estado }}</p>    
+                            <p><strong>Cliente:</strong> {{ pedido.cliente }}</p>  
+                            <p><strong>Observacion:</strong> {{ pedido.observacion }}</p>   
+                            <p><strong>Fecha:</strong> {{ pedido.fecha }}</p>                                
                         </div>
 
                             <div class="card-footer">
-                                    <a href="{% url 'control:pedidos' %}"><button type="button" class="btn btn-secondary btn-sm">Regresar</button></a>
+                                <form action="{% url 'control:estado_pedido' pedido.id %}" method="post" id="pedido_form">
                                     
+                                  <a href="{% url 'control:pedidos' %}"><button type="button" class="btn btn-secondary">Regresar</button></a>                                   
+                                  <button type="submit" class="btn btn-success float-right">Cocinado</button>
+
+                                </form>
                             </div>
 
                       </div> 

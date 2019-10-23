@@ -25,9 +25,10 @@
             <thead>
               <tr>
                 <th width="15%">Detalle Pedido</th>
-                <th>Id</th>
+                <th>No. de Pedido</th>
                 <th>Total</th>               
                 <th>Estado</th>
+                <th>Cliente</th>
                 {% if user.is_authenticated %}
                 <th style="text-align: center;">Accion</th>
                 {% endif %} 
@@ -42,14 +43,16 @@
                 {% for pedido in pedido_list %}                     
                     <tr>
                         
-                        {% if user.is_authenticated %}
+                        
                         <td style="text-align: center;">
                         {% if perms.control.view_actividad %}<a href="{{ pedido.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>{% endif %}  
+                        </td> 
                         <td>{{ pedido.id }}</td>
                         <td>Q{{ pedido.total }}</td> 
-                        </td> 
-                        {% endif %} 
+                        
+                        
                         <td>{{ pedido.estado }}</td>
+                        <td>{{ pedido.cliente }}</td>
 
                         {% if user.is_authenticated %}
                         <td style="text-align: center;">

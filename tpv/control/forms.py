@@ -34,13 +34,36 @@ class ProductoForm(ModelForm):
         fields = '__all__'
         
 # ------------------------------------
+import datetime
 
 class PedidoForm(ModelForm):
+    fecha = forms.DateTimeField(initial=datetime.datetime.now, 
+        widget=forms.HiddenInput())
 
     def __init__(self, *args, **kwargs):
             super(PedidoForm, self).__init__(*args, **kwargs)
-            for visible in self.visible_fields():
-                visible.field.widget.attrs['class'] = 'form-control'                     
+            self.fields['total'].widget.attrs\
+            .update({
+                'class': 'form-control'
+            })
+            self.fields['fecha'].widget.attrs\
+            .update({
+                'class': 'form-control'
+            })
+            self.fields['estado'].widget.attrs\
+            .update({
+                'class': 'form-control'
+            })  
+            self.fields['cliente'].widget.attrs\
+            .update({
+                'class': 'form-control'
+            }) 
+            self.fields['observacion'].widget.attrs\
+            .update({
+                'class': 'form-control'
+            }) 
+            self.fields['fecha'].widget.attrs['readonly'] = True 
+                           
 
     class Meta:
         model = Pedido
@@ -63,13 +86,11 @@ class DetallePedidoForm(ModelForm):
             .update({
                 'class': 'form-control mypricefield'
             })   
-            self.fields['producto'].widget.attrs['required'] = True 
+            # self.fields['producto'].widget.attrs['required'] = True 
             self.fields['cantidad'].widget.attrs['min'] = 1 
             self.fields['cantidad'].widget.attrs['required'] = True  
             self.fields['precio'].widget.attrs['min'] = 1  
-            self.fields['precio'].widget.attrs['readonly'] = True
-            # self.fields['producto'].queryset = Producto.objects.filter(categoria='p')
-               
+            self.fields['precio'].widget.attrs['readonly'] = True           
 
     class Meta:
         model = DetallePedido
@@ -81,6 +102,7 @@ DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=Detalle
 
 class VentaForm(ModelForm):
     pedido = forms.ModelChoiceField(queryset=Pedido.objects.all(),empty_label="Seleccione el Numero del Pedido a Cancelar")
+    fecha = forms.DateTimeField(initial=datetime.datetime.now, widget=forms.HiddenInput())
 
     def __init__(self, *args, **kwargs):
             super(VentaForm, self).__init__(*args, **kwargs)
@@ -107,7 +129,7 @@ class VentaForm(ModelForm):
             self.fields['pedido'].widget.attrs['required'] = True 
             self.fields['fecha'].widget.attrs['readonly'] = True
             self.fields['total'].widget.attrs['readonly'] = True
-            # self.fields['pedido'].queryset = Pedido.objects.filter(estado='Pendiente')
+            self.fields['pedido'].queryset = Pedido.objects.filter(estado='Cocinado')
 
     class Meta:
         model = Venta
