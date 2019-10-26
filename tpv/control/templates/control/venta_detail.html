@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8" />
     
-    {% block title %}<title>Factura No : {{ venta.id }} </title>{% endblock %}
+    {% block title %}<title>Factura No. {{ venta.id }} </title>{% endblock %}
 		<script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
 		
     <style type="text/css" media="all">
@@ -92,12 +92,12 @@
           </tr>
         <tr>
           <td width="100%">
-            <span class="left" style="text-align: left;">Dirección : Barrio el Carrizal</span>	
-            <span class="left" style="text-align: left;">Teléfono : 79458745</span> 
-            <span class="left" style="text-align: left;">ID Venta : {{ venta.id }}</span>
-            <span class="left" style="text-align: left;">Fecha : {{ venta.fecha }}</span>
-            <span class="left" style="text-align: left;">Nit Cliente : {{ venta.nit }}</span>
-            <span class="left" style="text-align: left;">Cliente&nbsp;: {{ venta.cliente }}</span> 
+            <span class="left" style="text-align: left;"><strong>Dirección :</strong> Barrio el Carrizal</span>	
+            <span class="left" style="text-align: left;"><strong>Teléfono :</strong> 7756 6865</span> 
+            <span class="left" style="text-align: left;"><strong>No. Factura :</strong> {{ venta.id }}</span>
+            <span class="left" style="text-align: left;"><strong>Fecha :</strong> {{ venta.fecha }}</span>
+            <span class="left" style="text-align: left;"><strong>Nit Cliente :</strong> {{ venta.nit }}</span>
+            <span class="left" style="text-align: left;"><strong>Cliente&nbsp;:</strong> {{ venta.cliente }}</span> 
             
           </td>
         </tr>   
@@ -108,19 +108,21 @@
       <table class="table" cellspacing="0"  border="0"> 
         <thead> 
           <tr> 
-            <th width="35%" align="left">Productos</th>
-            <th width="10%">Cantidad</th>
-            <th width="25%">Precio</th>
-            <th width="20%" align="right">Total</th> 
+            <th width="45%" align="center">Productos</th>
+            <th width="5%">Cantidad</th>
+            <th width="35%">Precio</th>
+
           </tr> 
         </thead> 
         <tbody> 
+                {% for producto in venta.pedido.detallepedido_set.all %}
                 <tr>
-                    <td style="text-align:left; width:130px; padding-bottom: 10px" valign="top">Hamburguesa</td>
-                    <td style="text-align:center; width:50px;" valign="top">1</td>
-                    <td style="text-align:center; width:50px;" valign="top">Q 100.00</td>
-                    <td style="text-align:right; width:70px;" valign="top">Q 100.00</td>
+                    <td style="text-align:left; width:130px; padding-bottom: 10px" valign="top">&nbsp;&nbsp;{{producto.producto}}</td>
+                    <td style="text-align:center; width:50px;" valign="top">{{producto.cantidad}}</td>
+                    <td style="text-align:center; width:50px;" valign="top">Q{{producto.precio}}</td>
                 </tr>	
+                {% endfor %}
+                
               
           </tbody> 
       </table> 
@@ -130,10 +132,10 @@
             <tbody>          
               <tr>
                 <td colspan="3" style="text-align:left; border-top: 1px solid #000; padding-top: 5px; padding-bottom: 5px;">
-                  <b>Total :</b>
+                  <b>Total de la venta :</b>
                 </td>
                 
-                <td style="text-align:right; border-top: 1px solid #000; padding-top: 5px; padding-bottom: 5px;">
+                <td style="text-align:center; border-top: 1px solid #000; padding-top: 5px; padding-bottom: 5px;">
                   Q{{ venta.total }}			
                 </td>
               </tr>

@@ -63,7 +63,7 @@
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProductos" aria-expanded="true" aria-controls="collapseProductos">
-          <i class="fas fa-fw fa-cog"></i>
+          <i class="fas fa-utensils"></i>
           <span>Productos</span>
         </a>
         <div id="collapseProductos" class="collapse" aria-labelledby="headingProducto" data-parent="#accordionSidebar">
@@ -78,7 +78,7 @@
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePedidos" aria-expanded="true" aria-controls="collapsePedidos">
-          <i class="fas fa-fw fa-wrench"></i>
+          <i class="fas fa-shopping-cart"></i>
           <span>Pedidos</span>
         </a>
         <div id="collapsePedidos" class="collapse" aria-labelledby="headingPedidos" data-parent="#accordionSidebar">
@@ -93,13 +93,13 @@
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVentas" aria-expanded="true" aria-controls="collapseVentas">
-          <i class="fas fa-fw fa-wrench"></i>
+          <i class="fas fa-money-check-alt"></i>
           <span>Ventas</span>
         </a>
         <div id="collapseVentas" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Manejo de Ventas:</h6>
-            <a class="collapse-item" href="{% url 'control:ventas' %}">Listar Ventas</a>
+            <a class="collapse-item" href="{% url 'control:ventas' %}">Informes</a>
             <a class="collapse-item" href="{% url 'control:venta_create' %}">Nueva Venta</a>           
           </div>
         </div>

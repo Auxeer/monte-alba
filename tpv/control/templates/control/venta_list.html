@@ -16,9 +16,42 @@
         <h4 class="m-0 font-weight-bold text-primary">Listado de Ventas</h4>
         <a href="{% url 'control:venta_create' %}"><button type="button" class="btn btn-success float-right">Agregar</button></a>
       </div>
+
+      <div class="card-body card-block">
+            <br>    
+          <div class="col-sm-2">
+              <b>Total de Ventas:</b>     
+          </div> 
+          
+          <div class="row">             
+              <div class="col-sm-2">
+                  <input type="text" style="text-align: center" id="tot" value="Q0.00" class="form-control" readonly>
+              </div>
+              <div class="col-sm-2">
+                  <img src="{% static 'img/icon/actualizar.png' %}" width="30" height="31" onclick="CalcularTotalVentas()"/> 
+              </div>
+              <div class="col-sm-2">
+                  
+              </div>
+              <div class="col-sm-2">
+                  
+              </div>
+              <div class="col-sm-2">
+                
+              </div>
+              <div class="col-sm-2">
+                <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm float-right" onclick="fnExcelReport()"><i class="fas fa-download fa-sm text-white-50"></i> Generar Reporte</button>
+              </div>
+          </div>
+
+      </div> 
+
+      
+
       <div class="card-body">
           
         <div class="table-responsive">
+
           <table class="table table-bordered" id="Tabla" width="100%" cellspacing="0">
             <thead>
               <tr>
@@ -46,7 +79,7 @@
                     <tr>
                         {% if perms.control.view_actividad %}
                         <td style="text-align: center;">
-                            <a href="{{ venta.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>
+                            <a href="{{ venta.get_absolute_url }}"><img src="{% static 'img/icon/factura.png' %}" width="25" height="25"/></a>
                         </td> 
                         {% endif %}
                         <td>{{ venta.id }}</td>                       
@@ -64,14 +97,82 @@
                     </tr>
                 {% endfor %}                      
                 
-                {% endif %}   
+                {% endif %}  
                 
-
             </tbody>
           </table>
+
         </div>
 
       </div>
+      
     </div>
+
+    <script>
+      
+      function CalcularTotalVentas () {
+        var subtotal = 0;
+        var total = 0;
+        //var trLength = $("#tPedidos TBODY TR").length;
+        $("#Tabla TBODY TR").each(function (index) {
+
+            var row = $(this);
+            //console.log(row);      
+            
+                //Valor de Precio
+                //Precio = row.find("TD").eq(3).find('input').val();
+                Precio = row.find("TD").eq(3).html().split('Q')[1];
+                console.log(Precio);
+
+                //Valor de Cantidad
+                //CantidadPedido = row.find("TD").eq(2).find('input').val();
+                //console.log(CantidadPedido);
+                
+                //subtotal de PRECIO * CAntidad y Total de cada fila
+                //subtotal = Precio * CantidadPedido;
+                total += Number(Precio);
+                console.log(total);
+                          
+            });
+
+            //Asignarle el valor al input
+            $("#tot").val("Q " + total);
+            //console.log(total);          
+        }
+
+        function fnExcelReport() {
+          var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
+              var textRange; var j=0;
+              tab = document.getElementById('Tabla'); // id of table
+
+              for(j = 0 ; j < tab.rows.length ; j++) 
+              {     
+                  tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+                  //tab_text=tab_text+"</tr>";
+              }
+
+              tab_text=tab_text+"</table>";
+              tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+              tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+              tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+              var ua = window.navigator.userAgent;
+              var msie = ua.indexOf("MSIE "); 
+
+              if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+              {
+                  txtArea1.document.open("txt/html","replace");
+                  txtArea1.document.write(tab_text);
+                  txtArea1.document.close();
+                  txtArea1.focus(); 
+                  sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+              }  
+              else                 //other browser not tested on IE 11
+                  sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+
+              return (sa);
+          }
+
+    </script>
 
 {% endblock content %}
