@@ -21,7 +21,7 @@
 
   <!-- Custom styles for this page -->
   <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
-
+  <link rel="stylesheet" href="{% static 'vendor/datatables/buttons.dataTables.min.css' %}">
 
 </head>
 
@@ -35,10 +35,10 @@
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'control:index' %}">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+        <!--<div class="sidebar-brand-icon rotate-n-15">
+          <i class="fas fa-laugh-wink"></i> -->
           <!--<img src="{% static 'img/icon/logo.jpg' %}" style="width: 80px;" />-->
-        </div>
+        <!--</div> -->
         <div class="sidebar-brand-text mx-3">Monte Alba</div>
       </a>
 
@@ -49,7 +49,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'control:index' %}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
+          <span>Inicio</span></a>
       </li>
 
       <!-- Divider -->
@@ -60,9 +60,10 @@
         Operaciones
       </div>
 
+      {% if user.is_staff %}
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProductos" aria-expanded="true" aria-controls="collapseProductos">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseProductos" aria-expanded="true" aria-controls="collapseProductos">
           <i class="fas fa-utensils"></i>
           <span>Productos</span>
         </a>
@@ -74,36 +75,51 @@
           </div>
         </div>
       </li>
+      {% endif %} 
 
+      {% if user.is_staff or request.user.username == 'Mesero' or request.user.username == 'Cocinero' or request.user.username == 'Cajero' %}
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePedidos" aria-expanded="true" aria-controls="collapsePedidos">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapsePedidos" aria-expanded="true" aria-controls="collapsePedidos">
           <i class="fas fa-shopping-cart"></i>
           <span>Pedidos</span>
         </a>
         <div id="collapsePedidos" class="collapse" aria-labelledby="headingPedidos" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Manejo de Pedidos:</h6>
+
+            {% if perms.control.view_pedido %}
             <a class="collapse-item" href="{% url 'control:pedidos' %}">Listar Pedidos</a>
-            <a class="collapse-item" href="{% url 'control:pedido_create' %}">Nuevo Pedido</a>           
+            {% endif %} 
+
+            {% if perms.control.add_pedido %}
+            <a class="collapse-item" href="{% url 'control:pedido_create' %}">Nuevo Pedido</a> 
+            {% endif %}           
           </div>
         </div>
       </li>
-
+      {% endif %} 
+      
+      {% if user.is_staff or request.user.username == 'Cajero' %}
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVentas" aria-expanded="true" aria-controls="collapseVentas">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseVentas" aria-expanded="true" aria-controls="collapseVentas">
           <i class="fas fa-money-check-alt"></i>
           <span>Ventas</span>
         </a>
         <div id="collapseVentas" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Manejo de Ventas:</h6>
-            <a class="collapse-item" href="{% url 'control:ventas' %}">Informes</a>
+            {% if user.is_staff %}
+            <a class="collapse-item" href="{% url 'control:ventas' %}">Reportes</a>
+            {% else %}
+            <a class="collapse-item" href="{% url 'control:ventas' %}">Ventas</a>
+            {% endif %}            
             <a class="collapse-item" href="{% url 'control:venta_create' %}">Nueva Venta</a>           
           </div>
         </div>
       </li>
+      {% endif %} 
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -166,12 +182,15 @@
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 
-                <a class="dropdown-item" href="#">
+                {% if user.is_staff %}
+                <a class="dropdown-item" href="{% url 'admin:index' %}">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Ajustes
                 </a>
-                
+
                 <div class="dropdown-divider"></div>
+                {% endif %} 
+
                 <a class="dropdown-item" href="" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Cerrar Sesion
@@ -254,12 +273,31 @@
   <!-- Page level custom scripts -->
   <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
 
+   <!-- DataTables Buttons JavaScript -->
+   <script src="{% static 'vendor/datatables/dataTables.buttons.min.js' %}"></script>
+   <script src="{% static 'vendor/datatables/buttons.print.min.js' %}"></script>
+   <script src="{% static 'vendor/datatables/buttons.html5.min.js' %}"></script>
+
+   <script src="{% static 'vendor/datatables/ajax/jszip.min.js' %}"></script>
+   <script src="{% static 'vendor/datatables/ajax/pdfmake.min.js' %}"></script>
+   <script src="{% static 'vendor/datatables/ajax/vfs_fonts.js' %}"></script>
+
+   <style>
+   .dataTables_wrapper .dt-buttons {
+      float:none;  
+      text-align:center;
+    }
+   </style>
+
   <!-- Script para cambiar idioma de dataTables -->
   <script type="text/javascript">
         
     $(function () {
     $('#Tabla').DataTable( {
-            "language": idioma_español
+            responsive: true,
+            "language": idioma_español,
+            retrieve: true,
+            "order": [[ 3, 'desc' ],],
         } );
      });
 

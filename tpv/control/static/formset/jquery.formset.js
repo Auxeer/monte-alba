@@ -268,11 +268,12 @@ function CalcularTotal () {
             //subtotal de PRECIO * CAntidad y Total de cada fila
             subtotal = Precio * CantidadPedido;
             total += Number(subtotal);
-            //console.log(total);
+            totalFi = total.toFixed(2);
+            //console.log(totalFi);
         }                
         });
 
         //Asignarle el valor al input
-        $("#total").val(total);
-        //console.log(total);          
+        $("#total").val(totalFi);
+        //console.log(totalFi);          
     }

@@ -38,8 +38,11 @@
                             <div class="card-footer">
                                 <form action="{% url 'control:estado_pedido' pedido.id %}" method="post" id="pedido_form">
                                     
-                                  <a href="{% url 'control:pedidos' %}"><button type="button" class="btn btn-secondary">Regresar</button></a>                                   
-                                  <button type="submit" class="btn btn-success float-right">Cocinado</button>
+                                  <a href="{% url 'control:pedidos' %}"><button type="button" class="btn btn-secondary">Regresar</button></a>
+                                    
+                                  {% if user.is_staff or request.user.username == 'Cocinero' %}                                 
+                                  <button type="submit" class="btn btn-success float-right" style="display:none;" id="bListo">Listo</button>
+                                  {% endif %} 
 
                                 </form>
                             </div>
@@ -50,5 +53,22 @@
         </div>     
         
 </div>
+
+  <script>
+      //Mostrar el botton de listo si estado = Pendiente
+      window.onload=function() {
+          var x = document.getElementById("bListo");
+
+          estado = "{{ pedido.estado }}";
+          console.log(estado);
+          
+          if (estado === "Pendiente") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+        } 
+
+  </script>
 
 {% endblock content %}

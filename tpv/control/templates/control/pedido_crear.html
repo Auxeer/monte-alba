@@ -119,6 +119,8 @@
     <script>
 
     $(document).on("change", ".mydropdownclass" , function() {
+        $(this).find(':first-child').attr("disabled","disabled");
+
         producto_id = $(this).val();
         var url = '/control/price/'+producto_id;
         //console.log(producto_id);
@@ -149,10 +151,12 @@
 
     });
 
+    $('.mydropdownclass').each(function() {
+        //$(this).find('.mydropdownclass:first-child').attr("disabled","disabled");
+        $(this).find(':first-child').attr("disabled","disabled");
+    });
     
     // --------------------------------------------
-     
-
         // --------------------------------------------
         // Scripts para Calcular el Total del Pedido al cambiar un Field o abrir pagina
         $('#tPedidos').on('change', 'input', function () {

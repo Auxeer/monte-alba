@@ -129,7 +129,7 @@ class VentaForm(ModelForm):
             self.fields['pedido'].widget.attrs['required'] = True 
             self.fields['fecha'].widget.attrs['readonly'] = True
             self.fields['total'].widget.attrs['readonly'] = True
-            self.fields['pedido'].queryset = Pedido.objects.filter(estado='Cocinado')
+            self.fields['pedido'].queryset = Pedido.objects.filter(estado='Listo')
 
     class Meta:
         model = Venta
