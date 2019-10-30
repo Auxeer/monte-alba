@@ -5,16 +5,13 @@
 {% block title %}<title>Listado de Pedidos</title>{% endblock %}
 
 {% block content %}
-
-
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Pedidos</h1>
+    {% if user.is_staff or request.user.username == 'Mesero' or request.user.username == 'Cocinero' or request.user.username == 'Cajero' %}
     
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
         <h4 class="m-0 font-weight-bold text-primary">Listado de Pedidos</h4>
-        {% if perms.control.add_persona %}
+        {% if perms.control.add_pedido %}
         <a href="{% url 'control:pedido_create' %}"><button type="button" class="btn btn-success float-right">Agregar</button></a>
         {% endif %}
       </div>
@@ -24,11 +21,14 @@
           <table class="table table-bordered" id="Tabla" width="100%" cellspacing="0">
             <thead>
               <tr>
+                {% if perms.control.view_pedido %}
                 <th width="15%">Detalle Pedido</th>
-                <th>Id</th>
+                {% endif %} 
+                <th>No. de Pedido</th>
                 <th>Total</th>               
                 <th>Estado</th>
-                {% if user.is_authenticated %}
+                <th>Cliente</th>
+                {% if user.is_staff or request.user.username == 'Mesero' or request.user.username == 'Cajero' %}
                 <th style="text-align: center;">Accion</th>
                 {% endif %} 
 
@@ -39,27 +39,117 @@
 
                 {% if pedido_list %}
 
-                {% for pedido in pedido_list %}                     
-                    <tr>
-                        
-                        {% if user.is_authenticated %}
-                        <td style="text-align: center;">
-                        {% if perms.control.view_actividad %}<a href="{{ pedido.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>{% endif %}  
-                        <td>{{ pedido.id }}</td>
-                        <td>Q{{ pedido.total }}</td> 
-                        </td> 
-                        {% endif %} 
-                        <td>{{ pedido.estado }}</td>
 
-                        {% if user.is_authenticated %}
-                        <td style="text-align: center;">
-                            {% if perms.control.change_actividad %}<a href="{% url 'control:pedido_update' pedido.id %}"><img src="{% static 'img/icon/update.png' %}" width="25" height="25"/></a>{% endif %}  
-                            {% if perms.control.delete_actividad %}<a href="{% url 'control:pedido_delete' pedido.id %}"><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>{% endif %}  
-                        </td> 
-                        {% endif %}                                 
+                    {% if user.is_staff %}
+                          {% for pedido in pedido_list %} 
+                            <tr>
+                                
+                                {% if perms.control.view_pedido %}
+                                <td style="text-align: center;">
+                                  <a href="{{ pedido.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>
+                                </td>
+                                {% endif %}   
+                                <td>{{ pedido.id }}</td>
+                                <td>Q{{ pedido.total }}</td>                                                
+                                <td>{{ pedido.estado }}</td>
+                                <td>{{ pedido.cliente }}</td>
 
-                    </tr>
-                {% endfor %}                      
+                                {% if user.is_staff or request.user.username == 'Mesero' or request.user.username == 'Cajero' %}
+                                <td style="text-align: center;">
+                                    {% if perms.control.change_pedido %}
+                                      {% if pedido.estado == 'Pendiente' %}
+                                      <a href="{% url 'control:pedido_update' pedido.id %}"><img src="{% static 'img/icon/update.png' %}" id="imgChange" width="25" height="25"/></a>
+                                      {% elif pedido.estado == 'Listo' %}
+                                      <img src="{% static 'img/icon/listo.png' %}" id="imgChange" width="25" height="25"/>
+                                      {% else %}
+                                      <img src="{% static 'img/icon/completado.png' %}" id="imgChange" width="25" height="25"/>
+                                      {% endif %} 
+                                    {% endif %}   
+                                    {% if perms.control.delete_pedido %}
+                                      {% if pedido.estado == 'Pendiente' %}
+                                      <a href="{% url 'control:pedido_delete' pedido.id %}"><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>
+                                      {% endif %}  
+                                    {% endif %} 
+                                </td>    
+                                {% endif %}                              
+
+                            </tr>
+                          {% endfor %}
+                    {% endif  %} 
+
+                    {% if request.user.username == 'Mesero' or request.user.username == 'Cajero' %} 
+                          {% for pedido in pendientelistos_list %}
+                            <tr>
+                                    
+                                {% if perms.control.view_pedido %}
+                                <td style="text-align: center;">
+                                  <a href="{{ pedido.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>
+                                </td>
+                                {% endif %}   
+                                <td>{{ pedido.id }}</td>
+                                <td>Q{{ pedido.total }}</td>                                                
+                                <td>{{ pedido.estado }}</td>
+                                <td>{{ pedido.cliente }}</td>
+
+                                {% if user.is_staff or request.user.username == 'Mesero' or request.user.username == 'Cajero'  %}
+                                <td style="text-align: center;">
+                                    {% if perms.control.change_pedido %}
+                                      {% if pedido.estado == 'Pendiente' %}
+                                      <a href="{% url 'control:pedido_update' pedido.id %}"><img src="{% static 'img/icon/update.png' %}" id="imgChange" width="25" height="25"/></a>
+                                      {% elif pedido.estado == 'Listo' %}
+                                      <img src="{% static 'img/icon/listo.png' %}" id="imgChange" width="25" height="25"/>
+                                      {% else %}
+                                      <img src="{% static 'img/icon/completado.png' %}" id="imgChange" width="25" height="25"/>
+                                      {% endif %} 
+                                    {% endif %}   
+                                    {% if perms.control.delete_pedido %}
+                                      {% if pedido.estado == 'Pendiente' %}
+                                      <a href="{% url 'control:pedido_delete' pedido.id %}"><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>
+                                      {% endif %}  
+                                    {% endif %} 
+                                </td>    
+                                {% endif %}                              
+
+                            </tr>
+                          {% endfor %}
+                    {% endif %} 
+
+                    {% if request.user.username == 'Cocinero' %} 
+                          {% for pedido in pendiente_list %}
+                            <tr>
+                                    
+                                {% if perms.control.view_pedido %}
+                                <td style="text-align: center;">
+                                  <a href="{{ pedido.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>
+                                </td>
+                                {% endif %}   
+                                <td>{{ pedido.id }}</td>
+                                <td>Q{{ pedido.total }}</td>                                                
+                                <td>{{ pedido.estado }}</td>
+                                <td>{{ pedido.cliente }}</td>
+
+                                {% if user.is_staff or request.user.username == 'Mesero' or request.user.username == 'Cajero'  %}
+                                <td style="text-align: center;">
+                                    {% if perms.control.change_pedido %}
+                                      {% if pedido.estado == 'Pendiente' %}
+                                      <a href="{% url 'control:pedido_update' pedido.id %}"><img src="{% static 'img/icon/update.png' %}" id="imgChange" width="25" height="25"/></a>
+                                      {% elif pedido.estado == 'Listo' %}
+                                      <img src="{% static 'img/icon/listo.png' %}" id="imgChange" width="25" height="25"/>
+                                      {% else %}
+                                      <img src="{% static 'img/icon/completado.png' %}" id="imgChange" width="25" height="25"/>
+                                      {% endif %} 
+                                    {% endif %}   
+                                    {% if perms.control.delete_pedido %}
+                                      {% if pedido.estado == 'Pendiente' %}
+                                      <a href="{% url 'control:pedido_delete' pedido.id %}"><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>
+                                      {% endif %}  
+                                    {% endif %} 
+                                </td>    
+                                {% endif %}                              
+
+                            </tr>
+                          {% endfor %}
+                    {% endif %}                       
                 
                 {% endif %}   
                 
@@ -70,5 +160,7 @@
 
       </div>
     </div>
+
+    {% endif %} 
 
 {% endblock content %}

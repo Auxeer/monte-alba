@@ -45,10 +45,13 @@
 
                     {% if next %}
                         {% if user.is_authenticated %}
-                        <p>Your account doesn't have access to this page. To proceed,
-                        please login with an account that has access.</p>
+                        <p style="text-align:center;display:block;"> 
+                          Tu cuenta no tiene acceso a esta pagina. Para proceder
+                          inicia sesion con una cuenta que tenga acceso.
+                          <a href="{% url 'control:index' %}" style="text-align:center;display:block;">Regresar al Sistema</a>
+                        </p>
                         {% else %}
-                        <p>Please login to see this page.</p>
+                        <p style="text-align:center;display:block;">Por favor inicia sesion para acceder a esta pagina..</p>
                         {% endif %}
                     {% endif %}
 

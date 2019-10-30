@@ -82,9 +82,12 @@
                         // We're dealing with an inline formset.
                         // Rather than remove this form from the DOM, we'll mark it as deleted
                         // and hide it, then let Django handle the deleting:
+                        //console.log(row);
                         del.val('on');
-                        row.hide();
+                        row.hide();                      
                         forms = $('.' + options.formCssClass).not(':hidden');
+                        //console.log(row);
+                        //console.log(forms);
                         CalcularTotal();
                     } else {
                         row.remove();
@@ -129,7 +132,7 @@
                     del.before('<input type="hidden" name="' + del.attr('name') +'" id="' + del.attr('id') +'" value="on" />');
                     row.hide();
                 } else {
-                    del.before('<input type="hidden" name="' + del.attr('name') +'" id="' + del.attr('id') +'" />');
+                    del.before('<input type="hidden" name="' + del.attr('name') +'" id="' + del.attr('id') +'" />');                   
                 }
                 // Hide any labels associated with the DELETE checkbox:
                 $('label[for="' + del.attr('id') + '"]').hide();
@@ -159,7 +162,7 @@
                 // Otherwise, use the last form in the formset; this works much better if you've got
                 // extra (>= 1) forms (thnaks to justhamade for pointing this out):
                 template = $('.' + options.formCssClass + ':last').clone(true).removeAttr('id');
-                template.find('input:hidden[id $= "-DELETE"]').remove();
+                template.find('input:hidden[id $= "-DELETE"]').remove();               
                 // Clear all cloned fields, except those the user wants to keep (thanks to brunogola for the suggestion):
                 template.find(childElementSelector).not(options.keepFieldValues).each(function() {
                     var elem = $(this);
@@ -244,20 +247,33 @@ function CalcularTotal () {
         }
 
         var row = $(this);
+        console.log(row);      
+        //f = $(this).find(':last');
+        //console.log(f);
+
+        //e = $(this).closest("tr").find('.formset_row.dynamic-form');
+
+        //if(row.not(':hidden')) {
+        //if(row.css("visibility") !== 'hidden') {
+        if(row.css('display') !== 'none') {
 
             //Valor de Precio
             Precio = row.find("TD").eq(1).find('input').val();
+            //console.log(Precio);
 
             //Valor de Cantidad
             CantidadPedido = row.find("TD").eq(2).find('input').val();
-
+            //console.log(CantidadPedido);
+            
             //subtotal de PRECIO * CAntidad y Total de cada fila
             subtotal = Precio * CantidadPedido;
             total += Number(subtotal);
-            //console.log(total);                
+            totalFi = total.toFixed(2);
+            //console.log(totalFi);
+        }                
         });
 
         //Asignarle el valor al input
-        $("#total").val(total);
-        //console.log(total);          
+        $("#total").val(totalFi);
+        //console.log(totalFi);          
     }

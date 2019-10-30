@@ -1,0 +1,208 @@
+{% extends "control/main.html" %}
+
+{% load static %}
+
+{% block title %}
+  {% if user.is_staff %}
+  <title>Reporte Ventas</title>
+  {% else %}
+  <title>Listado Ventas</title>
+  {% endif %} 
+{% endblock %}
+
+{% block content %}
+    {% if user.is_staff or request.user.username == 'Cajero' %}
+    
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        {% if user.is_staff %}
+        <h4 class="m-0 font-weight-bold text-primary">Reporte de Ventas</h4>
+        {% else %}
+        <h4 class="m-0 font-weight-bold text-primary">Listado de Ventas</h4>
+        {% endif %} 
+
+        {% if perms.control.add_venta %}
+        <a href="{% url 'control:venta_create' %}"><button type="button" class="btn btn-success float-right">Agregar</button></a>
+        {% endif %} 
+      </div>
+
+      <div class="card-body">
+          
+        <div class="table-responsive">
+
+          <table class="table table-bordered" id="Tabla" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                {% if perms.control.view_venta %}
+                <th>Factura</th>
+                {% endif %}
+                <th>No. Venta</th>
+                <!--<th>No. Pedido</th>-->
+                <th>Fecha de Venta</th>
+                <th>Total</th>
+                <th>Nit Cliente</th>
+                <th>Cliente</th>                
+                {% if user.is_staff %}
+                <th style="text-align: center;">Accion</th>
+                {% endif %} 
+
+              </tr>
+            </thead>
+            
+            <tbody>
+
+                {% if venta_list %}
+
+                {% for venta in venta_list %}                     
+                    <tr>
+                        {% if perms.control.view_venta %}
+                        <td style="text-align: center;">
+                            <a href="{{ venta.get_absolute_url }}"><img src="{% static 'img/icon/factura.png' %}" width="25" height="25"/></a>
+                        </td> 
+                        {% endif %}
+                        <td>{{ venta.id }}</td>                       
+                        <!--<td>{{ venta.pedido.pk }}</td>-->
+                        <td>{{ venta.fecha }}</td>
+                        <td>Q{{ venta.total }}</td>
+                        <td>{{ venta.nit  }}</td>
+                        <td>{{ venta.cliente  }}</td>
+                        {% if user.is_staff %}
+                        <td style="text-align: center;" width="13%">  
+                            {% if user.is_staff %}<a href="{% url 'control:venta_delete' venta.id %}"><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>{% endif %}  
+                        </td> 
+                        {% endif %}                                 
+
+                    </tr>
+                {% endfor %}                      
+                
+                {% endif %}  
+                
+            </tbody>
+
+            {% if user.is_staff %}
+            <tfoot>
+
+                <tr>
+                  <!--<th colspan="6" style="text-align:right">Total:</th>-->
+                  <th style="border-right: 0px solid;"></th> <th style="border-right: 0px solid;"></th> <th style="border-right: 0px solid;"></th> 
+                  <th></th> <th style="text-align:right;">Total:</th>   
+                  <th id="tdTotal" style="text-align:center;"> Q0.00 </th>
+                  <th></th>
+    
+                </tr>
+    
+            </tfoot>
+            {% endif %} 
+
+          </table>
+          
+
+        </div>
+
+      </div>
+      
+    </div>
+
+    {% endif %} 
+
+    {% if user.is_staff %}
+    <script>
+
+      // --------------------------------------------
+
+      window.onload = function() {
+          CalcularTotalVentas();
+          SumarOnSearch();
+        };
+
+        // --------------------------------------------
+      
+         
+      function CalcularTotalVentas () {
+        var subtotal = 0;
+        var total = 0;
+          
+          var table = $('#Tabla').DataTable( { 
+            responsive: true,
+            dom:  "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
+                  "<'row'<'col-sm-12'tr>>" +
+                  "<'row'<'col-sm-5'i><'col-sm-7'p>>", 	
+            buttons: [ 
+            { extend: 'excelHtml5',  exportOptions:{columns:[1,2,3,4,5]}, 
+              text: 'Reporte en Excel', title: 'Reporte de Ventas', filename: 'Reporte de Ventas ', footer: true,
+              customize: function( xlsx ) {
+                  var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                  $('row c[r^="A"]', sheet).attr( 's', '50' );
+                  $('row c[r^="B"]', sheet).attr( 's', '50' );
+                  $('row c[r^="C"]', sheet).attr( 's', '50' );
+                  $('row c[r^="D"]', sheet).attr( 's', '50' );
+                  $('row c[r^="E"]', sheet).attr( 's', '50' ); 
+                  
+                  $('row:first c', sheet).attr( 's', '51' );
+                  
+                  $('row c[r="A2"]', sheet).attr( 's', '2' );
+                  $('row c[r="B2"]', sheet).attr( 's', '2' );
+                  $('row c[r="C2"]', sheet).attr( 's', '2' );
+                  $('row c[r="D2"]', sheet).attr( 's', '2' );
+                  $('row c[r="E2"]', sheet).attr( 's', '2' );  
+              }
+            },
+
+            { extend: 'pdfHtml5', exportOptions:{columns:[1,2,3,4,5]}, 
+              text: 'Reporte en PDF', title: 'Reporte de Ventas', filename: 'Reporte de Ventas ', footer: true,
+              customize: function (doc) {
+                doc.content[1].table.widths = 
+                    Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+              }
+            },			
+            ],
+            initComplete: function () {
+            var btns = $('.dt-button');
+            btns.addClass('btn btn-sm btn-primary shadow-sm');
+            btns.removeClass('dt-button');
+            },
+            "language": idioma_español,  retrieve: true,} );
+
+
+          table.rows({ search: 'applied' }).data().each(function(cant, index){
+            //var row = $(this);
+            //console.log(row);      
+            
+                //Valor de Precio
+                //Precio = row.find("TD").eq(3).find('input').val();
+                //Precio = row.find("TD").eq(3).html().split('Q')[1];
+                //console.log(Precio);
+
+                Precio = cant[3].split('Q')[1];
+                //console.log(Precio);
+
+                total += Number(Precio);
+                totalFi = total.toFixed(2);
+                //console.log(totalFi);
+          
+                          
+            });         
+          
+            //Asignarle el valor al input
+            //$("#tot").val("Q " + total);
+            document.getElementById('tdTotal').innerHTML = "Q" + totalFi;
+            //console.log(totalFi);          
+        };   
+
+        //SumarOnSearch----------------------------------------------------------
+        function SumarOnSearch () {
+
+          $('#Tabla').DataTable().on( 'search.dt', function () {
+            CalcularTotalVentas();
+        } );
+
+        };  
+
+    </script>
+    {% endif %} 
+
+    
+
+{% endblock content %}

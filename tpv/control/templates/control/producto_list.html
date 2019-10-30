@@ -5,16 +5,15 @@
 {% block title %}<title>Listado Productos</title>{% endblock %}
 
 {% block content %}
-
-
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Productos</h1>
+    {% if user.is_staff %}
     
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
         <h4 class="m-0 font-weight-bold text-primary">Listado de Productos</h4>
+        {% if perms.control.add_producto %}
         <a href="{% url 'control:producto_create' %}"><button type="button" class="btn btn-success float-right">Agregar</button></a>
+        {% endif %} 
       </div>
       <div class="card-body">
           
@@ -27,7 +26,7 @@
                 <th>Descripcion</th>
                 <th>Precio</th>
                 <th>Categoria</th>
-                {% if user.is_authenticated %}
+                {% if user.is_staff %}
                 <th style="text-align: center;">Accion</th>
                 {% endif %} 
 
@@ -46,13 +45,13 @@
                         <td>Q{{ producto.precio }}</td>
                         <td>{{ producto.get_categoria_display  }}</td>
 
-                        {% if user.is_authenticated %}
+                        {% if user.is_staff %}
                         <td style="text-align: center;">
-                            {% if perms.control.view_actividad %}<a href="{{ producto.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>{% endif %}  
-                            {% if perms.control.change_actividad %}<a href="{% url 'control:producto_update' producto.id %}"><img src="{% static 'img/icon/update.png' %}" width="25" height="25"/></a>{% endif %}  
-                            {% if perms.control.delete_actividad %}<a href="{% url 'control:producto_delete' producto.id %}"><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>{% endif %}  
-                        </td> 
-                        {% endif %}                                 
+                            {% if perms.control.view_producto %}<a href="{{ producto.get_absolute_url }}"><img src="{% static 'img/icon/view.png' %}" width="25" height="25"/></a>{% endif %}  
+                            {% if perms.control.change_producto %}<a href="{% url 'control:producto_update' producto.id %}"><img src="{% static 'img/icon/update.png' %}" width="25" height="25"/></a>{% endif %}  
+                            {% if perms.control.delete_producto %}<a href="{% url 'control:producto_delete' producto.id %}"><img src="{% static 'img/icon/delete.png' %}" width="25" height="25"/></a>{% endif %}  
+                        </td>      
+                        {% endif %}                             
 
                     </tr>
                 {% endfor %}                      
@@ -66,5 +65,7 @@
 
       </div>
     </div>
+
+    {% endif %} 
 
 {% endblock content %}

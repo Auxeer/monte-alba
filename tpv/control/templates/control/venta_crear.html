@@ -1,0 +1,116 @@
+{% extends "control/main.html" %}
+
+{% load static %}
+
+{% block title %}<title>Realizar Venta</title>{% endblock %}
+
+{% block content %}
+
+<div class="section__content section__content--p30">
+
+        <h1 class="h3 mb-4 text-gray-800">Realizar Venta</h1>        
+
+        <div class="col-lg-12">               
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                          <h6 class="m-0 font-weight-bold text-primary">Datos de la Venta</h6>
+                        </div>
+
+                        <div class="card-body card-block">
+                        
+                            <form action="" method="post" class="" id="venta_form">
+                                <div class="form-group">
+                                {% csrf_token %}
+                                    <div class="row form-group">
+    
+                                            <div class="col col-md-12">
+                                                    
+                                                    {{ form.fecha }}
+                                            </div>
+                                           
+    
+                                            <div class="col col-md-12">
+                                                    <label for="" id="" class="form-control-label">Pedido:</label>
+                                                    {{ form.pedido }}
+                                            </div>
+                                            <div class="col-12 col-md-9">                                              
+                                                <br>                                  
+                                            </div>
+    
+                                            <div class="col col-md-12">
+                                                    <label for="" id="" class="form-control-label">Total:</label>
+                                                    {{ form.total }}
+                                            </div>
+                                            <div class="col-12 col-md-9">                                              
+                                                <br>                                  
+                                            </div>
+
+                                            <div class="col col-md-12">
+                                                    <label for="" id="" class="form-control-label">Nit</label>
+                                                    {{ form.nit }}
+                                                </div>
+                                                <div class="col-12 col-md-9">                                              
+                                                    <br>                                  
+                                                </div>   
+    
+                                            <div class="col col-md-12">
+                                                    <label for="" id="" class="form-control-label">Cliente</label>
+                                                    {{ form.cliente }}
+                                            </div>
+                                            <div class="col-12 col-md-9">                                              
+                                                <br>                                  
+                                            </div>
+                                                                              
+                                    </div>                                                                             
+                                </div>
+    
+                                
+                                   
+                        </div>
+
+                            <div class="card-footer">
+                                    <a href="{% url 'control:ventas' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
+                                    <button type="submit" class="btn btn-success float-right">Agregar</button>
+                            </div>
+
+                      </div> 
+                        </form>
+                
+        </div>     
+        
+    </div>
+
+    <script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+
+    <script>
+    //Opcion para disabled la primera opcion del dropdownlist
+    $("#id_pedido option:first-child").attr("disabled","disabled");
+    
+    //Funcion para obtener el total del pedido y mandarlo al field total de la venta
+    $("#id_pedido").change(function () {
+        pedido_id = $(this).val();
+        var url = '/control/total/'+pedido_id;
+        //console.log(pedido_id);
+
+        $.ajax({              
+        type: "GET",    
+        url: url,                   
+        data: {
+            'pedido': pedido_id 
+        },
+        success: function (data) {   
+            //console.log('Funciono!');
+            //console.log(data);
+            $("#id_total").val(data);       
+        },
+        error: function(data) {
+            alert('Ha ocurrido un error, intentalo de nuevo');
+            //console.log(data);
+        } 
+
+        });        
+    });
+
+    </script>
+
+{% endblock content %}
