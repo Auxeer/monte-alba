@@ -1,0 +1,93 @@
+{% extends "informativa/main_template.html" %}
+
+{% load static %}
+
+{% block titulo %} <title>Monte alba - Menu</title>{% endblock titulo %}
+
+  {% block content %}
+<!--inicio fondo-->
+<div class="home-slider owl-carousel img" style="background-image: url({% static 'images/bg_1.jpg' %});">
+    <div class="slider-item" style="background-image: url({% static 'images/bg_3.jpg' %});">
+        <div class="overlay"></div>
+      <div class="container">
+        <div class="row slider-text justify-content-center align-items-center">
+          <div class="col-md-7 col-sm-12 text-center ftco-animate">
+              <h1 class="mb-3 mt-5 bread">Nuestro Menu</h1>
+              <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'informativa:index' %}">Home</a></span> <span>Menu</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- fin fondo-->
+
+<!-- inicio platillos-->
+<div class="ftco-section">
+      <div class="container">
+          <div class="row justify-content-center mb-5 pb-3">
+              <div class="col-md-7 heading-section ftco-animate text-center">
+                  <h2 class="mb-4">Nuestro Menu</h2>
+                  <h3>Disfruta de nuestra variedad de platillos y bebidas.</h3>
+                  <p>Muchas opciones disponibles para tu gusto.</p>
+              </div>
+          </div>
+      </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7 heading-section ftco-animate text-center">
+                <h2 class="mb-4">Platillos</h2>
+            </div>
+        </div>
+    </div>
+
+      {% if producto_list %}      
+      <div class="container-wrap">
+          <div class="row no-gutters d-flex">
+              {% for producto in platillos_list %}
+              <div class="col-lg-4 d-flex ftco-animate" style="height:300px;">
+                  <div class="services-wrap d-flex">                        
+                      <a class="img order-lg-last" style="background-image: url({{ producto.imagen.url }});" ></a>                           
+                      <div class="text p-4">
+                          <h3>{{ producto.producto }}</h3>
+                          <p align="justify">{{ producto.descripcion }}</p>
+                          <p class="price"><span>Q{{ producto.precio }}</span>
+                      </div>
+                  </div>
+              </div>
+              
+              {% endfor %}
+          </div>
+      </div>
+
+      <br>
+      <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7 heading-section ftco-animate text-center">
+                <h2 class="mb-4">Bebidas</h2>
+            </div>
+        </div>
+      </div>
+
+      <div class="container-wrap">
+          <div class="row no-gutters d-flex">
+              {% for producto in bebidas_list %}
+              <div class="col-lg-4 d-flex ftco-animate" style="height:300px;">
+                  <div class="services-wrap d-flex">                        
+                      <a class="img order-lg-last" style="background-image: url({{ producto.imagen.url }});" ></a>                           
+                      <div class="text p-4">
+                          <h3>{{ producto.producto }}</h3>
+                          <p align="justify">{{ producto.descripcion }}</p>
+                          <p class="price"><span>Q{{ producto.precio }}</span>
+                      </div>
+                  </div>
+              </div>
+              
+              {% endfor %}
+          </div>
+      </div>
+      {% endif %}
+
+  </div>
+
+  {% endblock content %}

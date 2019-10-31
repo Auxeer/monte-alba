@@ -1,0 +1,218 @@
+{% extends "informativa/main_template.html" %}
+{% load static %}
+{% block titulo %} <title>Monte alba</title>{% endblock titulo %}
+  {% block content %}
+
+  <div class="home-slider owl-carousel img" style="background-image: url({% static 'images/bg_1.jpg' %})">
+    <div class="slider-item">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row slider-text align-items-center" data-scrollax-parent="true">
+
+          <div class="col-md-6 col-sm-12 ftco-animate">
+            <span class="subheading">Pruébalas</span>
+            <h1 class="mb-4">Hamburguesas</h1>
+            <p class="mb-4 mb-md-5">Alta dedicacion para agradarle.</p>
+            <p><a href="{% url 'informativa:producto-list' %}" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">Ver Menu</a></p>
+          </div>
+          <div class="col-md-6 ftco-animate">
+            <img src="{% static 'images/caribeña.jpg' %}" class="img-fluid" alt="">
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-item">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row slider-text align-items-center" data-scrollax-parent="true">
+
+          <div class="col-md-6 col-sm-12 order-md-last ftco-animate">
+            <span class="subheading">Visitanos</span>
+            <h1 class="mb-4">Baguettes</h1>
+            <p class="mb-4 mb-md-5">Pruebalos</p>
+            <p><a href="{% url 'informativa:producto-list' %}" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">Ver Menu</a></p>
+          </div>
+          <div class="col-md-6 ftco-animate">
+            <img src="{% static 'images/baguette-jamon.jpg' %}" class="img-fluid" alt="">
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-item" style="background-image: url({% static 'images/bg_3.jpg' %})">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
+
+          <div class="col-md-7 col-sm-12 text-center ftco-animate">
+            <span class="subheading">Bienvenido</span>
+            <h1 class="mb-4">Esperamos servirle bien</h1>
+            <p class="mb-4 mb-md-5">Visitenos pronto!</p>
+            <p><a href="{% url 'informativa:producto-list' %}" class="btn btn-white btn-outline-white p-3 px-xl-4 py-xl-3">Ver Menu</a></p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- fin seccion 1-->
+
+<!--inicio seccion informacion-->
+<div class="ftco-intro">
+    <div class="container-wrap">
+    		<div class="wrap d-md-flex">
+	    		<div class="info">
+	    			<div class="row no-gutters">
+	    				<div class="col-md-4 d-flex ftco-animate">
+	    					<div class="icon"><span class="icon-phone"></span></div>
+	    					<div class="text">
+	    						<h3>502 7756 6865</h3>
+	    						<p>Estamos esperando que te comuniques.</p>
+	    					</div>
+	    				</div>
+	    				<div class="col-md-4 d-flex ftco-animate">
+	    					<div class="icon"><span class="icon-my_location"></span></div>
+	    					<div class="text">
+	    						<h3>Barrio el carrizal</h3>
+	    						<p>Enfrente de panaderia San antonio</p>
+	    					</div>
+	    				</div>
+	    				<div class="col-md-4 d-flex ftco-animate">
+	    					<div class="icon"><span class="icon-clock-o"></span></div>
+	    					<div class="text">
+	    						<h3>Abierto Martes a Domingo</h3>
+	    						<p>10:00am - 8:00pm</p>
+	    					</div>
+	    				</div>
+	    			</div>
+	    		</div>
+	    		<div class="social d-md-flex pl-md-5 p-4 align-items-center">
+	    			<ul class="social-icon">
+              <li class="ftco-animate"><a href="https://www.facebook.com/montealbagt/"><span class="icon-facebook"></span></a></li>
+              <li class="ftco-animate"><a href="https://www.instagram.com/montealbagt/?hl=es"><span class="icon-instagram"></span></a></li>
+            </ul>
+	    		</div>
+    		</div>
+    	</div>
+</div>
+<!--fin seccion informacion-->
+
+<!--inicio presentacion-->
+<div class="ftco-about d-md-flex">
+    <div class="one-half img" style="background-image: url({% static 'images/img-montealba.jpg' %})"></div>
+    <div class="one-half ftco-animate">
+      <div class="heading-section ftco-animate ">
+        <h2 class="mb-4">Bienvenido a <span class="flaticon-chef ">Restaurante</span> Monte Alba</h2>
+      </div>
+      <div>
+        <h3>Creamos momentos Gourmet para ti y tu familia.</h3>
+      </div>
+    </div>
+</div>
+<!--fin presentacion-->
+
+
+<!--Inicio servicios-->
+<div class="ftco-section ftco-services">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row justify-content-center mb-5 pb-3">
+        <div class="col-md-7 heading-section ftco-animate text-center">
+          <h2 class="mb-4">Nuestros servicios</h2>
+          <p>Disponibles para servirte</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 ftco-animate">
+          <div class="media d-block text-center block-6 services">
+            <div class="icon d-flex justify-content-center align-items-center mb-5">
+              <span class="flaticon-medal"></span>
+            </div>
+            <div class="media-body">
+              <h3 class="heading">Reservaciones</h3>
+              <p>Llámanos o escribenos a nuestras cuentas en Facebook e Instagram, indicando el día, la hora y la cantidad de invitados para que nuestro personal te pueda atender a la brevedad posible.</p>
+            </div>
+          </div>      
+        </div>
+        <div class="col-md-4 ftco-animate">
+          <div class="media d-block text-center block-6 services">
+            <div class="icon d-flex justify-content-center align-items-center mb-5">
+              <span class="flaticon-laugh"></span>
+            </div>
+            <div class="media-body">
+              <h3 class="heading">Nuestras categorias</h3>
+              <p>-Hamburguesas, baguettes, snacks, nachos, bebidas.</p>   
+            </div>
+          </div>      
+        </div>
+        <div class="col-md-4 ftco-animate">
+          <div class="media d-block text-center block-6 services">
+            <div class="icon d-flex justify-content-center align-items-center mb-5"><span class="flaticon-chef"></span></div>
+            <div class="media-body">
+              <h3 class="heading">Eventos</h3>
+              <p>Ven y disfruta con tus familiares y amigos, y disfruta de nuestros platillos y bebidas. Reserva con nosotros!.</p>
+            </div>
+          </div>    
+        </div>
+      </div>
+    </div>
+</div>
+<!--fin servicios-->
+
+<!-- inicio platillos-->
+
+<!--fin platillos-->
+
+<!--inicio galeria-->
+<div class="ftco-gallery">
+    <div class="container">
+        <div class="row justify-content-center mb-5 pb-3">
+             <div class="col-md-7 heading-section ftco-animate text-center">
+                <h2 class="mb-4">Galeria</h2>
+                <p>Ven y disfruta.</p>
+              </div>
+        </div>
+    </div>
+    <div class="container-wrap">
+    		<div class="row no-gutters">
+					<div class="col-md-3 ftco-animate">
+						<a class="gallery img d-flex align-items-center" style="background-image: url({% static 'images/galeria-2.jpg' %})">
+						</a>
+					</div>
+					<div class="col-md-3 ftco-animate">
+						<a class="gallery img d-flex align-items-center" style="background-image: url({% static 'images/galeria-3.jpg' %})">
+						</a>
+					</div>
+					<div class="col-md-3 ftco-animate">
+						<a class="gallery img d-flex align-items-center" style="background-image: url({% static 'images/galeria-10.jpg' %})">
+						</a>
+					</div>
+					<div class="col-md-3 ftco-animate">
+						<a class="gallery img d-flex align-items-center" style="background-image: url({% static 'images/galeria-5.jpg' %})">
+						</a>
+          </div>
+          <div class="col-md-3 ftco-animate">
+              <a class="gallery img d-flex align-items-center" style="background-image: url({% static 'images/galeria-6.jpg' %})">
+              </a>
+            </div>
+            <div class="col-md-3 ftco-animate">
+                <a class="gallery img d-flex align-items-center" style="background-image: url({% static 'images/galeria-7.jpg' %})">
+                </a>
+              </div>
+              <div class="col-md-3 ftco-animate">
+                  <a class="gallery img d-flex align-items-center" style="background-image: url({% static 'images/galeria-8.jpg' %})">
+                  </a>
+                </div>
+                <div class="col-md-3 ftco-animate">
+                    <a class="gallery img d-flex align-items-center" style="background-image: url({% static 'images/galeria-10.jpg' %})">
+                    </a>
+                  </div>
+
+        </div>
+    	</div>
+</div>
+<!--fin galeria-->
+  {% endblock content %}

@@ -18,7 +18,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('control/', include('control.urls'))
+    path('control/', include('control.urls')),
+    path('informativa/', include('informativa.urls')),
 ]
 
 #Add URL maps to redirect the base URL to our application

@@ -1,0 +1,79 @@
+{% extends "informativa/main_template.html" %}
+{% load static %}
+{% block titulo %} <title>Monte alba - Acerca de Nosotros</title>{% endblock titulo %}
+  {% block content %}
+<!--inicio fondo-->
+<div class="home-slider owl-carousel img" style="background-image: url({% static 'images/bg_1.jpg' %});">
+    <div class="slider-item" style="background-image: url({% static 'images/bg_3.jpg' %});">
+        <div class="overlay"></div>
+      <div class="container">
+        <div class="row slider-text justify-content-center align-items-center">
+          <div class="col-md-7 col-sm-12 text-center ftco-animate">
+              <h1 class="mb-3 mt-5 bread">Acerca de Nosotros</h1>
+              <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'informativa:index' %}">Home</a></span> <span>Acerca de Nosotros</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!--fin fondo-->
+
+<!--inicio seccion informacion-->
+<div class="ftco-intro">
+    <div class="container-wrap">
+        <div class="wrap d-md-flex">
+            <div class="info">
+                <div class="row no-gutters">
+                    <div class="col-md-4 d-flex ftco-animate">
+                        <div class="icon"><span class="icon-phone"></span></div>
+                            <div class="text">
+                                <h3>502 7856 6865</h3>
+                                    <p>Estamos esperando que te comuniques</p>
+                            </div>
+                    </div>
+                    <div class="col-md-4 d-flex ftco-animate">
+                        <div class="icon"><span class="icon-my_location"></span></div>
+                            <div class="text">
+                                <h3>Barrio el carrizal</h3>
+                                <p>Enfrente de panaderia San antonio</p>
+                            </div>
+                    </div>
+                    <div class="col-md-4 d-flex ftco-animate">
+                        <div class="icon"><span class="icon-clock-o"></span></div>
+                            <div class="text">
+                                <h3>Abierto Martes a Domingo</h3>
+                                <p>10:00am - 8:00pm</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="social d-md-flex pl-md-5 p-4 align-items-center">
+                <ul class="social-icon">
+                  <li class="ftco-animate"><a href="https://www.facebook.com/montealbagt/"><span class="icon-facebook"></span></a></li>
+                  <li class="ftco-animate"><a href="https://www.instagram.com/montealbagt/?hl=es"><span class="icon-instagram"></span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FIN INFORMACION-->
+
+<!---->
+<!--inicio presentacion-->
+<div class="ftco-about d-md-flex">
+        <div class="one-half img" style="background-image: url({% static 'images/img-montealba.jpg' %})"></div>
+        <div class="one-half ftco-animate">
+          <div class="heading-section ftco-animate ">
+            <h2 class="mb-4">Bienvenido a <span class="flaticon-chef">Restaurante</span> Monte Alba</h2>
+          </div>
+          <div>
+            <p>Creamos momentos gourmet para que tu, tu familia y amigos puedan disfrutar un buen platillo al mejor precio. Que quedes satisfecho es nuestra prioridad.</p>
+          </div>
+        </div>
+</div>
+    <!--fin presentacion-->
+<!---->
+
+<!---->
+<!---->
+  {% endblock content%}

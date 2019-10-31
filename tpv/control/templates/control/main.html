@@ -23,6 +23,8 @@
   <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'vendor/datatables/buttons.dataTables.min.css' %}">
 
+  <link rel="icon" href="{% static 'img/icon/logooo.png' %}">
+
 </head>
 
 <body id="page-top">
@@ -35,15 +37,23 @@
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'control:index' %}">
-        <!--<div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i> -->
-          <!--<img src="{% static 'img/icon/logo.jpg' %}" style="width: 80px;" />-->
-        <!--</div> -->
+        <div class="sidebar-brand-icon">
+          <!--<i class="fas fa-laugh-wink"></i> -->
+          <img src="{% static 'img/icon/logooo.png' %}" style="width: 45px;" />
+        </div>
         <div class="sidebar-brand-text mx-3">Monte Alba</div>
       </a>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
+
+      {% if user.is_staff %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'informativa:index' %}">        
+          <img src="{% static 'img/icon/logooo.png' %}" style="width: 20px;" />
+          <span>Monte Alba</span></a>
+      </li>
+      {% endif %} 
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
